@@ -11,6 +11,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+//@Table(name = "cart_entity", schema = "cart")
 public class CartItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

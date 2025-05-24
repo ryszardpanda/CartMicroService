@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+//@Table(name = "cart_entity", schema = "cart")
 public class CartEntity {
 
     @Id
