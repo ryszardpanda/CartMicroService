@@ -1,39 +1,41 @@
 package com.Cart.CartMicroService.model.entity;
 
+import com.Cart.CartMicroService.common.ProductsType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Getter
 @Setter
-public class CartEntity {
+public class CartItemConfigurationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItemEntity> items = new ArrayList<>();
+
+    private String name;
+    private BigDecimal price;
+    private ProductsType type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_item_id")
+    private CartItemEntity cartItem;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
 
-        if (!(o instanceof CartEntity))
+        if (!(o instanceof CartItemConfigurationEntity))
             return false;
 
-        CartEntity other = (CartEntity) o;
+        CartItemConfigurationEntity other = (CartItemConfigurationEntity) o;
 
         return id != null &&
                 id.equals(other.getId());

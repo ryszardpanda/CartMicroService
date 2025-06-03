@@ -19,4 +19,10 @@ public class ProductsService {
         log.info("ProductMicroService returned: " + products.toString());
         return products;
     }
+
+    public ProductDTO getProductById(Long id){
+        ProductDTO product = productsMicroserviceClient.getProductById(id);
+        log.info("ProductMicroService returned: " + product.toString());
+        return product;
+    }
 }

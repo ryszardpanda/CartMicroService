@@ -4,14 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartItemRequestDTO {
     private Long id;
-
-    private Long productId;
+    private Long productId;private List<CartItemConfigurationRequestDTO> configurations = new ArrayList<>();
     private String name;
-    private double price;
+    private BigDecimal price;
     private int quantity;
 }
