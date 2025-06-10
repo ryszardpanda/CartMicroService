@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProductsService {
+public class CartMicroService {
 
     private final ProductsMicroserviceClient productsMicroserviceClient;
 

@@ -23,6 +23,8 @@ public class CartEntity {
     private Long id;
     @CreationTimestamp
     private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private String userId;
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItemEntity> items = new ArrayList<>();
 
