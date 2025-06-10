@@ -1,7 +1,7 @@
 package com.Cart.CartMicroService.controller;
 
 import com.Cart.CartMicroService.model.dto.product.ProductDTO;
-import com.Cart.CartMicroService.service.CartMicroService;
+import com.Cart.CartMicroService.service.CartService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/products")
 public class CartController {
 
-    private final CartMicroService productsService;
+    private final CartService productsService;
 
     @GetMapping
     public Page<ProductDTO> getProducts(){

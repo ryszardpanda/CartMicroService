@@ -1,6 +1,6 @@
 package com.Cart.CartMicroService.model.dto.cart;
 
-import com.Cart.CartMicroService.model.entity.CartItemEntity;
+import com.Cart.CartMicroService.model.dto.cartItem.CartItemRequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartRequestDTO {
-    private Long id;
-    private List<CartItemEntity> items = new ArrayList<>();
+    private String userId;
+    private List<CartItemRequestDTO> items = new ArrayList<>();
 }
