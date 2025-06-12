@@ -12,9 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {
-    private Long id;
+    private Long productId;
     private String name;
     private BigDecimal price;
     private ProductsType type;
+    private int quantity;
     private List<ProductConfigurationDTO> configurations;
 }

@@ -5,6 +5,7 @@ import com.Cart.CartMicroService.exception.NoIdException;
 import com.Cart.CartMicroService.model.dto.product.ProductDTO;
 import com.Cart.CartMicroService.model.entity.CartEntity;
 import com.Cart.CartMicroService.repository.CartRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,17 +20,17 @@ public class CartService {
     private final ProductsMicroserviceClient productsMicroserviceClient;
     private final CartRepository cartRepository;
 
-    public Page<ProductDTO> getProducts(){
-        Page<ProductDTO> products = productsMicroserviceClient.getProducts();
-        log.info("CartMicroservice returned: " + products.toString());
-        return products;
-    }
-
-    public ProductDTO getProductById(Long id){
-        ProductDTO product = productsMicroserviceClient.getProductById(id);
-        log.info("CartMicroservice returned: " + product.toString());
-        return product;
-    }
+//    public Page<ProductDTO> getProducts(){
+//        Page<ProductDTO> products = productsMicroserviceClient.getProducts();
+//        log.info("CartMicroservice returned: " + products.toString());
+//        return products;
+//    }
+//
+//    public ProductDTO getProductById(Long id){
+//        ProductDTO product = productsMicroserviceClient.getProductById(id);
+//        log.info("CartMicroservice returned: " + product.toString());
+//        return product;
+//    }
 
     public CartEntity getOrCreateCart(String userId) {
         return cartRepository.findByUserId(userId)
@@ -38,16 +39,19 @@ public class CartService {
                     cart.setUserId(userId);
                     log.info("CartMicroservice returned: " + cart);
                     return cartRepository.save(cart);
-
                 });
     }
 
     public CartEntity getCart(Long id){
-        return cartRepository.findById(id)
+        CartEntity cartEntity = cartRepository.findById(id)
                 .orElseThrow(() -> new NoIdException("No cart with given id found " + id, HttpStatus.BAD_REQUEST));
+        log.info("CartMicroService returned cart: " + cartEntity.toString());
+        return cartEntity;
     }
 
+    @Transactional
     public void deleteCart(Long id){
+        log.info("CartMicroservice deleted Cart with id: " + id);
         cartRepository.deleteById(id);
     }
 }

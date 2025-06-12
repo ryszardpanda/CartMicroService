@@ -19,12 +19,12 @@ import java.util.List;
 public class CartItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long cartItemId;
 
     private Long productId;
-    private String productName;
-    private BigDecimal productPrice;
-    private ProductsType productType;
+    private String name;
+    private BigDecimal price;
+    private ProductsType type;
     private int quantity;
 
     @OneToMany(mappedBy = "cartItem", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -47,6 +47,7 @@ public class CartItemEntity {
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
 
         if (!(o instanceof CartItemEntity))
@@ -54,8 +55,8 @@ public class CartItemEntity {
 
         CartItemEntity other = (CartItemEntity) o;
 
-        return id != null &&
-                id.equals(other.getId());
+        return cartItemId != null &&
+                cartItemId.equals(other.getCartItemId());
     }
 
     @Override

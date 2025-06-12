@@ -18,7 +18,7 @@ public class CartItemConfigurationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long cartItemConfigurationId;
 
     private String name;
     private BigDecimal price;
@@ -37,8 +37,8 @@ public class CartItemConfigurationEntity {
 
         CartItemConfigurationEntity other = (CartItemConfigurationEntity) o;
 
-        return id != null &&
-                id.equals(other.getId());
+        return cartItemConfigurationId != null &&
+                cartItemConfigurationId.equals(other.getCartItemConfigurationId());
     }
 
     @Override

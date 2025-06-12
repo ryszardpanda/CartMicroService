@@ -12,10 +12,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartItemResponseDTO {
-    private Long id;
+    private Long cartItemId;
     private Long productId;
     private List<CartItemConfigurationResponseDTO> configurations = new ArrayList<>();
     private String name;
     private BigDecimal price;
     private int quantity;
 }
+
+

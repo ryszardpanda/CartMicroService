@@ -6,13 +6,26 @@ import com.Cart.CartMicroService.model.dto.product.ProductDTO;
 import com.Cart.CartMicroService.model.entity.CartItemConfigurationEntity;
 import com.Cart.CartMicroService.model.entity.CartItemEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CartItemMapper {
 
-    @Mapping(target = "configurations", source = "dto.configurations")
-    CartItemEntity toEntity(ProductDTO product, CartItemRequestDTO dto);
+
+    // MapStruct wygeneruje tę metodę
+    CartItemEntity toEntity(CartItemRequestDTO dto);
+
+    // Domyślna metoda, która ustawi relacje dwukierunkowe
+    default CartItemEntity toEntityWithRelations(CartItemRequestDTO dto) {
+        CartItemEntity entity = toEntity(dto);
+        if (entity.getConfigurations() != null) {
+            for (CartItemConfigurationEntity config : entity.getConfigurations()) {
+                entity.addConfiguration(config); // ustawia relację dwukierunkową
+            }
+        }
+        return entity;
+    }
+
+    CartItemEntity toEntity(ProductDTO product);
 
     CartItemConfigurationEntity toConfigurationEntity(CartItemConfigurationRequestDTO dto);
 

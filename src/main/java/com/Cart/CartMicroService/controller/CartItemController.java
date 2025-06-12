@@ -18,8 +18,8 @@ public class CartItemController {
     private final CartMapper cartMapper;
 
     @PostMapping("/{userId}/items")
-    public CartResponseDTO addOrUpdateItem(@PathVariable String userId, @RequestBody CartItemRequestDTO cartItemRequestDTO) {
-      return cartMapper.toDto(cartItemService.addOrUpdateItem(userId, cartItemRequestDTO));
+    public CartResponseDTO addItem(@PathVariable String userId, @RequestBody CartItemRequestDTO cartItemRequestDTO) {
+      return cartMapper.toDto(cartItemService.addItem(userId, cartItemRequestDTO));
     }
 
     @DeleteMapping()

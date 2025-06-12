@@ -20,7 +20,7 @@ public class CartEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long cartId;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @Column(nullable = false, unique = true)
@@ -37,8 +37,8 @@ public class CartEntity {
 
         CartEntity other = (CartEntity) o;
 
-        return id != null &&
-                id.equals(other.getId());
+        return cartId != null &&
+                cartId.equals(other.getCartId());
     }
 
     @Override

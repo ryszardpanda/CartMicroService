@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartResponseDTO {
-    private Long id;
+    private Long cartId;
     private String userId;
     private List<CartItemResponseDTO> items = new ArrayList<>();
 }

@@ -12,13 +12,13 @@ import org.mapstruct.factory.Mappers;
         uses = CartItemMapper.class
 )
 public interface CartMapper {
-    CartMapper INSTANCE = Mappers.getMapper(CartMapper.class);
+   // CartMapper INSTANCE = Mappers.getMapper(CartMapper.class);
 
-    @Mapping(target = "items", source = "items")
+   // @Mapping(target = "items", source = "items")
     CartResponseDTO toDto(CartEntity entity);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "items", ignore = true)
-    CartEntity toEntity(CartRequestDTO dto);
+//    @Mapping(target = "id", ignore = true)
+//    @Mapping(target = "createdAt", ignore = true)
+//    @Mapping(target = "items", ignore = true)
+    //CartEntity toEntity(CartRequestDTO dto);
 }

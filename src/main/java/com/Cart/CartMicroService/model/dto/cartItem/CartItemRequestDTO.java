@@ -12,8 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartItemRequestDTO {
+    private Long id;
     private Long productId;
-    private List<CartItemConfigurationResponseDTO> configurations = new ArrayList<>();
+    private List<CartItemConfigurationRequestDTO> configurations = new ArrayList<>();
     private String name;
     private BigDecimal price;
     private int quantity;

@@ -26,18 +26,28 @@ public class CartItemService {
     private final CartItemRepository cartItemRepository;
     private final ProductsMicroserviceClient productsClient;
     private final CartItemMapper cartItemMapper;
+    private final CartService cartService;
+
+//    @Transactional
+//    public CartEntity addOrUpdateItem(String userId, CartItemRequestDTO dto) {
+//        CartEntity cart = getOrCreateCart(userId);
+//        Optional<CartItemEntity> existingItem = findExistingItem(cart, dto.getProductId());
+//
+//        if (existingItem.isPresent()) {
+//            updateExistingItem(existingItem.get(), dto);
+//        } else {
+//            addNewItem(cart, dto);
+//        }
+//
+//        return cartRepository.save(cart);
+//    }
 
     @Transactional
-    public CartEntity addOrUpdateItem(String userId, CartItemRequestDTO dto) {
-        CartEntity cart = getOrCreateCart(userId);
-        Optional<CartItemEntity> existingItem = findExistingItem(cart, dto.getProductId());
-
-        if (existingItem.isPresent()) {
-            updateExistingItem(existingItem.get(), dto);
-        } else {
-            addNewItem(cart, dto);
-        }
-
+    public CartEntity addItem(String userId, CartItemRequestDTO cartItemRequestDTO){
+        CartEntity cart = cartService.getOrCreateCart(userId);
+        addNewItem(cart, cartItemRequestDTO);
+        ProductDTO product = productsClient.getProductById(cartItemRequestDTO.getProductId());
+        log.info("DTO z Feigna: {}", product);
         return cartRepository.save(cart);
     }
 
@@ -50,14 +60,14 @@ public class CartItemService {
     }
 
 
-    private CartEntity getOrCreateCart(String userId) {
-        return cartRepository.findByUserId(userId)
-                .orElseGet(() -> {
-                    CartEntity newCart = new CartEntity();
-                    newCart.setUserId(userId);
-                    return cartRepository.save(newCart);
-                });
-    }
+//    private CartEntity getOrCreateCart(String userId) {
+//        return cartRepository.findByUserId(userId)
+//                .orElseGet(() -> {
+//                    CartEntity newCart = new CartEntity();
+//                    newCart.setUserId(userId);
+//                    return cartRepository.save(newCart);
+//                });
+//    }
 
     private Optional<CartItemEntity> findExistingItem(CartEntity cart, Long productId) {
         return cart.getItems().stream()
@@ -73,8 +83,9 @@ public class CartItemService {
 
     private void addNewItem(CartEntity cart, CartItemRequestDTO dto) {
         ProductDTO product = productsClient.getProductById(dto.getProductId());
-        CartItemEntity item = cartItemMapper.toEntity(product, dto);
-        item.setCart(cart);
-        cart.getItems().add(item);
+
+        CartItemEntity cartItem = cartItemMapper.toEntity(product);
+        cartItem.setCart(cart);
+        cart.getItems().add(cartItem);
     }
 }

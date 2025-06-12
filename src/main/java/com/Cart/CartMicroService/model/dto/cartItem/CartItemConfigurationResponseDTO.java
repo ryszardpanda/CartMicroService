@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartItemConfigurationResponseDTO {
-    private Long id;
+    private Long cartItemConfigurationId;
     private String name;
     private BigDecimal price;
     private ProductsType type;
