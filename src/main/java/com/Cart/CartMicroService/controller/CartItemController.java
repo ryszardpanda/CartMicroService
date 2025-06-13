@@ -17,13 +17,15 @@ public class CartItemController {
     private final CartItemService cartItemService;
     private final CartMapper cartMapper;
 
-    @PostMapping("/{userId}/items")
+    @PostMapping("/{userId}/item")
     public CartResponseDTO addItem(@PathVariable String userId, @RequestBody CartItemRequestDTO cartItemRequestDTO) {
+        log.info("New request for endpoint POST/api/cart/{userId}/item logged");
       return cartMapper.toDto(cartItemService.addItem(userId, cartItemRequestDTO));
     }
 
-    @DeleteMapping()
-    public void removeItem(@PathVariable Long cartId, @PathVariable Long productId){
-        cartItemService.removeItem(cartId, productId);
+    @DeleteMapping("/{cartId}/item/{cartItemId}")
+    public void removeItem(@PathVariable Long cartId, @PathVariable Long cartItemId){
+        log.info("New request for endpoint DELETE/api/cart/{userId}/item logged");
+        cartItemService.removeItem(cartId, cartItemId);
     }
 }

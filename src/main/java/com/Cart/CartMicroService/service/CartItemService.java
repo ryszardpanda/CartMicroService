@@ -3,9 +3,12 @@ package com.Cart.CartMicroService.service;
 import com.Cart.CartMicroService.client.ProductsMicroserviceClient;
 import com.Cart.CartMicroService.exception.NoIdException;
 import com.Cart.CartMicroService.mapper.CartItemMapper;
+import com.Cart.CartMicroService.model.dto.cartItem.CartItemConfigurationRequestDTO;
 import com.Cart.CartMicroService.model.dto.cartItem.CartItemRequestDTO;
+import com.Cart.CartMicroService.model.dto.product.ProductConfigurationDTO;
 import com.Cart.CartMicroService.model.dto.product.ProductDTO;
 import com.Cart.CartMicroService.model.entity.CartEntity;
+import com.Cart.CartMicroService.model.entity.CartItemConfigurationEntity;
 import com.Cart.CartMicroService.model.entity.CartItemEntity;
 import com.Cart.CartMicroService.repository.CartItemRepository;
 import com.Cart.CartMicroService.repository.CartRepository;
@@ -15,7 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,63 +33,42 @@ public class CartItemService {
     private final CartItemMapper cartItemMapper;
     private final CartService cartService;
 
-//    @Transactional
-//    public CartEntity addOrUpdateItem(String userId, CartItemRequestDTO dto) {
-//        CartEntity cart = getOrCreateCart(userId);
-//        Optional<CartItemEntity> existingItem = findExistingItem(cart, dto.getProductId());
-//
-//        if (existingItem.isPresent()) {
-//            updateExistingItem(existingItem.get(), dto);
-//        } else {
-//            addNewItem(cart, dto);
-//        }
-//
-//        return cartRepository.save(cart);
-//    }
-
     @Transactional
     public CartEntity addItem(String userId, CartItemRequestDTO cartItemRequestDTO){
         CartEntity cart = cartService.getOrCreateCart(userId);
         addNewItem(cart, cartItemRequestDTO);
-        ProductDTO product = productsClient.getProductById(cartItemRequestDTO.getProductId());
-        log.info("DTO z Feigna: {}", product);
         return cartRepository.save(cart);
     }
 
     @Transactional
-    public void removeItem(Long cartId, Long productId) {
+    public void removeItem(Long cartId, Long cartItemId) {
         CartEntity cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new NoIdException("Cart not found: " + cartId, HttpStatus.BAD_REQUEST));
-        cart.getItems().removeIf(i -> i.getProductId().equals(productId));
+        cart.getItems().removeIf(i -> i.getCartItemId().equals(cartItemId));
         cartRepository.save(cart);
-    }
-
-
-//    private CartEntity getOrCreateCart(String userId) {
-//        return cartRepository.findByUserId(userId)
-//                .orElseGet(() -> {
-//                    CartEntity newCart = new CartEntity();
-//                    newCart.setUserId(userId);
-//                    return cartRepository.save(newCart);
-//                });
-//    }
-
-    private Optional<CartItemEntity> findExistingItem(CartEntity cart, Long productId) {
-        return cart.getItems().stream()
-                .filter(i -> i.getProductId().equals(productId))
-                .findFirst();
-    }
-
-    private void updateExistingItem(CartItemEntity item, CartItemRequestDTO dto) {
-        int newQuantity = item.getQuantity() + dto.getQuantity();
-        item.setQuantity(newQuantity);
-        cartItemRepository.save(item);
     }
 
     private void addNewItem(CartEntity cart, CartItemRequestDTO dto) {
         ProductDTO product = productsClient.getProductById(dto.getProductId());
 
+        Set<Long> selectedIds = dto.getConfigurations().stream()
+                .map(CartItemConfigurationRequestDTO::getId)
+                .collect(Collectors.toSet());
+
+        List<ProductConfigurationDTO> chosenCfgs = product.getConfigurations().stream()
+                .filter(c -> selectedIds.contains(c.getProductConfigurationId()))
+                .toList();
+
         CartItemEntity cartItem = cartItemMapper.toEntity(product);
+        cartItem.setQuantity(dto.getQuantity());
+        cartItem.setProductId(product.getProductId());
+
+        List<CartItemConfigurationEntity> cfgEntities = chosenCfgs.stream()
+                .map(cartItemMapper::toConfigurationEntity)
+                .peek(cfg -> cfg.setCartItem(cartItem))   // relacja dwukierunkowa
+                .toList();
+        cartItem.setConfigurations(cfgEntities);
+
         cartItem.setCart(cart);
         cart.getItems().add(cartItem);
     }

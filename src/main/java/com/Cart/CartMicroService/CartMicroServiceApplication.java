@@ -11,5 +11,4 @@ public class CartMicroServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CartMicroServiceApplication.class, args);
 	}
-
 }
