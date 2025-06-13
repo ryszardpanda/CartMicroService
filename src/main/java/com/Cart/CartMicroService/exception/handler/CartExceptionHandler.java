@@ -2,6 +2,7 @@ package com.Cart.CartMicroService.exception.handler;
 
 import com.Cart.CartMicroService.exception.ErrorMessage;
 import com.Cart.CartMicroService.exception.NoIdException;
+import com.Cart.CartMicroService.exception.ProductNotFoundException;
 import com.Cart.CartMicroService.exception.WrongTypeException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,12 @@ public class CartExceptionHandler {
     @ExceptionHandler({WrongTypeException.class})
     public ResponseEntity<ErrorMessage> handleWrongTypeException(
             WrongTypeException ex){
+        return new ResponseEntity<ErrorMessage>(
+                new ErrorMessage(ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
+    }
+    @ExceptionHandler({ProductNotFoundException.class})
+    public ResponseEntity<ErrorMessage> handleProductNotFoundExceptionn(
+            ProductNotFoundException ex){
         return new ResponseEntity<ErrorMessage>(
                 new ErrorMessage(ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
     }
