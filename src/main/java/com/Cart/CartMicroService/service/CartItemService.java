@@ -65,7 +65,7 @@ public class CartItemService {
 
         List<CartItemConfigurationEntity> cfgEntities = chosenCfgs.stream()
                 .map(cartItemMapper::toConfigurationEntity)
-                .peek(cfg -> cfg.setCartItem(cartItem))   // relacja dwukierunkowa
+                .peek(cfg -> cfg.setCartItem(cartItem))
                 .toList();
         cartItem.setConfigurations(cfgEntities);
 

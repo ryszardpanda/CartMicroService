@@ -35,16 +35,6 @@ public class CartItemEntity {
     @JoinColumn(name = "cart_id")
     private CartEntity cart;
 
-    public void addConfiguration(CartItemConfigurationEntity config) {
-        configurations.add(config);
-        config.setCartItem(this);
-    }
-
-    public void removeConfiguration(CartItemConfigurationEntity config) {
-        configurations.remove(config);
-        config.setCartItem(null);
-    }
-
     @Override
     public boolean equals(Object o) {
 
