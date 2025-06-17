@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "products-micro-service", url = "${base.url.products-micro-service}")
+@FeignClient(value = "products-microservice", url = "${base.url.products-micro-service}")
 public interface ProductsMicroserviceClient {
 
     @GetMapping()
