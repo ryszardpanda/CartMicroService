@@ -28,7 +28,7 @@ public class CartService {
 
     public CartEntity getCart(Long id){
         CartEntity cartEntity = cartRepository.findById(id)
-                .orElseThrow(() -> new NoIdException("No cart with given id found " + id, HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new NoIdException("No cart with given id found " + id, HttpStatus.NOT_FOUND));
         log.info("CartMicroService returned cart: " + cartEntity.toString());
         return cartEntity;
     }
