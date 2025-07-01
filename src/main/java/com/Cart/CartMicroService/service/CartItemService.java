@@ -10,7 +10,6 @@ import com.Cart.CartMicroService.model.dto.product.ProductDTO;
 import com.Cart.CartMicroService.model.entity.CartEntity;
 import com.Cart.CartMicroService.model.entity.CartItemConfigurationEntity;
 import com.Cart.CartMicroService.model.entity.CartItemEntity;
-import com.Cart.CartMicroService.repository.CartItemRepository;
 import com.Cart.CartMicroService.repository.CartRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,6 @@ import java.util.stream.Collectors;
 public class CartItemService {
 
     private final CartRepository cartRepository;
-    private final CartItemRepository cartItemRepository;
     private final ProductsMicroserviceClient productsClient;
     private final CartItemMapper cartItemMapper;
     private final CartService cartService;
@@ -44,7 +42,7 @@ public class CartItemService {
     public void removeItem(Long cartId, Long cartItemId) {
         CartEntity cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new NoIdException("Cart not found: " + cartId, HttpStatus.BAD_REQUEST));
-        cart.getItems().removeIf(i -> i.getCartItemId().equals(cartItemId));
+        cart.getItems().removeIf(item -> item.getCartItemId().equals(cartItemId));
         cartRepository.save(cart);
     }
 
