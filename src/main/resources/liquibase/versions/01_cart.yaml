@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 02-cart-module
-      author: yourNick
+      author: ryszardpanda
       changes:
 
         # --- CART -----------------------------------------------------------
