@@ -18,12 +18,13 @@ import java.util.List;
 @Setter
 public class CartItemEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartItemId;
 
     private Long productId;
     private String name;
     private BigDecimal price;
+    @Enumerated(EnumType.STRING)
     private ProductsType type;
     private int quantity;
 

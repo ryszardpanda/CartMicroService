@@ -78,7 +78,7 @@ databaseChangeLog:
             referencedColumnNames: cart_id
             onDelete: CASCADE
 
-        - addIndex:
+        - createIndex:
             indexName: idx_cart_item_cartid
             tableName: cart_item_entity
             columns:
@@ -125,7 +125,7 @@ databaseChangeLog:
             referencedColumnNames: cart_item_id
             onDelete: CASCADE
 
-        - addIndex:
+        - createIndex:
             indexName: idx_cfg_cart_itemid
             tableName: cart_item_configuration_entity
             columns:

@@ -22,6 +22,7 @@ public class CartItemConfigurationEntity {
 
     private String name;
     private BigDecimal price;
+    @Enumerated(EnumType.STRING)
     private ProductsType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
